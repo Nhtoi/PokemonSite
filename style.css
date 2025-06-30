@@ -1,28 +1,134 @@
 body {
-    background-image: url("/Images/background.jpg");
+    background-color: gray;
     background-position: center center;
-    background-repeat: no-repeat;        
-    background-size: cover;              
-    background-attachment: fixed;        
-    margin: 0;                           
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    font-family: 'Pokemon Hollow', sans-serif;
 }
-#container{
+
+#searchPokemon{
+    font-family: 'Pixelon', sans-serif;
+    border-radius: 20px;
+    background-color: white;
+}
+
+#searchPokemon:hover{
+    background-color: rgb(177, 205, 191);
+}
+
+button {
+    height: fit-content;
+    width: fit-content;
+    background-color: white;
+    font-family: 'Pixelon', sans-serif;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    border-radius: 7px;
+}
+
+button:hover{
+    background-color: lightblue;
+}
+
+button:active {
+    box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);
+    transform: translateY(1px);      
+
+}
+
+
+
+#container {
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-#buttonsContainer{
-  display: flex;
-  gap: 80px;
-  row-gap: 10px;
+form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.shiny-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  input {
+  caret-color: blue;
+}
+
+  /* The image acting as the checkbox */
+  label.pictureShiny {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    background-image: url('/Images/notshiny.png');
+    background-size: 25px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  /* Change image when checked */
+    input[type="checkbox"]:checked ~ label.pictureShiny {
+    background-image: url('/Images/shiny.png');
+    }
+
+  /* The text label style */
+  label.shinyText {
+    margin-bottom: 7px;
+    color: yellow;
+    text-shadow:
+        1px 1px 1px gold,
+        1px 1px 1px black,
+        1px 1px 1px black,
+        1px 1px 1px black;
+  }
+  label.shinyText:hover {
+    font-family: 'Pokemon Solid', sans-serif;
+  }
+
+
+#buttonsContainer {
+    display: flex;
+    justify-content: center;
+    width: 500px;
+    /* border-color: black;
+    border-style: solid; */
+    display: flex;
+    margin-top: 0px;
+    height: fit-content;
+    gap: 10px;
+    
+}
+
+#clear {
+    position: relative;
+    margin-right: 110px;
+}
+
+#subButton{
+   
 }
 #image-container {
     display: flex;
-    flex-wrap: wrap; 
-    gap: 10px; 
+    flex-wrap: wrap;
+    gap: 10px;
 }
-#pokemonContainer{
+
+#pokemonContainer {
+    font-family: 'Pokemon Solid', sans-serif;
+    background-color: white;
     display: flex;
     align-items: center;
     flex-direction: column;
@@ -30,9 +136,9 @@ body {
     border-radius: 2px;
     border-color: black;
     border-style: solid;
+    justify-content: space-between;
 }
 
-img{
+img {
     border-color: black;
-    
 }

@@ -1,6 +1,6 @@
 const subButton = document.getElementById("subButton")
 const clearButton = document.getElementById("clear")
-const shiny = document.getElementById("shiny")
+const shiny = document.getElementById("shinycheck")
 let isShiny = false
 shiny.addEventListener("change", ()=>{
     if(shiny.checked){
