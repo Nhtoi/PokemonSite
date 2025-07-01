@@ -18,14 +18,20 @@ shiny.addEventListener("change", ()=>{
 })
 
 //TODO: MAKE IT SO THE SELECTED POKEMON IS CLEARED INSTEAD OF THE WHOLE DIV.
-function clear(){
-    let clearTarget = document.getElementById("image-container")
-    console.log("clear")
-    clearTarget.replaceChildren("")
-    while (pokemonContainers.length > 0){
-        pokemonContainers.pop()
-    }
-}
+function clear(target){
+    if (target === undefined || target === null){
+      let clearTarget = document.getElementById("image-container")
+      console.log("clear")
+      clearTarget.replaceChildren("")
+        while (pokemonContainers.length > 0){
+          pokemonContainers.pop()
+      }
+    } else{
+      console.log(target)
+      target.remove()
+      pokemonContainers.pop()
+  }  
+ }
 
 clearButton.addEventListener("click", ()=>{
     clear()
@@ -93,7 +99,7 @@ async function CreatePokemon(url){
     imageContainer.append(pokemonContainer)
     pokemonContainers.push(pokemonContainer)
     
-    //TODO: ADD THE SELECTED POKEMON NOT THE HEAD OF THE ARRAY.
+
     const addPokemon = document.createElement("button")
     addPokemon.setAttribute("id", "AddButton")
     addPokemon.setAttribute("class", "button")
@@ -101,14 +107,12 @@ async function CreatePokemon(url){
     for (const container of pokemonContainers){
             container.append(addPokemon)
     }
-    addPokemon.addEventListener("click", ()=>{
-        for (const container of pokemonContainers){
-            let clearTarget = document.getElementById("team-container")
-            clearTarget.replaceChildren("")
-            const pokemonToAdd = container.children[1].getAttribute("src") 
-            teamMaker(pokemonToAdd) 
-            clear()        
-        }
+    addPokemon.addEventListener("click", (e)=>{
+   
+            let workingOn = e.target.parentElement
+            teamMaker(workingOn.children[1])
+            //console.log("LOOK HERE ", workingOn.children[1])      
+            clear(e.target.parentElement)  
     })
 }
 let team = []
@@ -116,24 +120,23 @@ let counter = 0;
 const teamContainer = document.getElementById("team-container")
 const completedTeam = document.getElementById("completed-team")
 
-//TODO: PRETTY UP THE DISPLAY FOR THE POKEMON TEAM.
+//TODO: FIX BUG NOT APPENDING TO COMPLETEDTEAM CORRECTLY
+//TODO: NOT CLEARING ALL THE DIV INSTEAD REMOVING INNERTEXT
 function teamMaker(pokemonToAdd) {
     const teamDiv = document.createElement("div")
-    console.log(pokemonToAdd)
+    console.log("LOOK HERE",pokemonToAdd)
     team.push(pokemonToAdd)
-    console.log(team)
+    console.log(team.length)
     counter += 1
-    
-    for (const item of team) {
-        const teamMemberImage = document.createElement("img")
-        teamMemberImage.setAttribute("src", `${item}`)
-        teamDiv.append(teamMemberImage)
-    }
+    teamDiv.append(pokemonToAdd)
     console.log(teamDiv)
     teamContainer.append(teamDiv)
     if (team.length >= 6){
         teamDiv.setAttribute("id",`teamNumber${counter}`)
         counter += 1
+    for (const items of team) {
+      completedTeam.append(items)
+    }
         team = []
         completedTeam.append(teamDiv)
     }
