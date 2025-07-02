@@ -3,11 +3,14 @@ const clearButton = document.getElementById("clear")
 const shiny = document.getElementById("shinycheck")
 const body = document.querySelector("body")
 const imageContainer = document.getElementById("image-container")
+
 let typeColorsPromise = fetch('colors.json').then(res => res.json());
 let team = []
 let inputPokemon;
 let isShiny = false
 let pokemonContainers = []
+let sound;
+
 shiny.addEventListener("change", ()=>{
     if(shiny.checked){
         isShiny = true
@@ -18,13 +21,11 @@ shiny.addEventListener("change", ()=>{
 function clear(target){
     if (target === undefined || target === null){
       let clearTarget = document.getElementById("image-container")
-      //console.log("clear")
       clearTarget.replaceChildren("")
         while (pokemonContainers.length > 0){
           pokemonContainers.pop()
       }
     } else{
-      //console.log(target)
       target.remove()
       pokemonContainers.pop()
   }  
@@ -43,6 +44,7 @@ function setUrl(inputPokemon){
     return url
 }
 async function getData(url){
+
     try {
         let res = await fetch(url)
         if(!res.ok){
@@ -50,7 +52,7 @@ async function getData(url){
         }
 
         res = await res.json() 
-        
+        console.log(res)
         return res
     }
     catch {
@@ -58,13 +60,14 @@ async function getData(url){
     }
 }
 let typing = []
-//TODO: MAKE IT LOOK BETTER WHEN DISPLAYING TYPINGS
+
 async function CreatePokemon(url){
     const pokemonContainer = document.createElement("div")
     pokemonContainer.setAttribute("id", "pokemonContainer") 
     let sprite = ""
     data = await getData(url)
-    //console.log(data)
+    
+    // console.log(sound)
     if (isShiny){
         sprite = data.sprites.front_shiny
     } else {
@@ -74,6 +77,7 @@ async function CreatePokemon(url){
     const typingDiv = document.createElement("div")
     typingDiv.setAttribute("id", "pokemon")
     typingDiv.setAttribute("name", `${inputPokemon}`)
+    typingDiv.setAttribute("sound", `${data.cries.latest}`)
     const types = [...data.types]
     const colors = await typeColorsPromise
     console.log(colors)
@@ -82,7 +86,7 @@ async function CreatePokemon(url){
         console.log(typing.type.name)
         let typeTextDiv = document.createElement("div")
         typeTextDiv.setAttribute("id",`type${count}`)
-        typeTextDiv.setAttribute("class", colors[typing.type.name] )
+    typeTextDiv.setAttribute("class", colors[typing.type.name] )
         typeTextDiv.innerText = typing.type.name
         count += 1
         typingDiv.append(typeTextDiv)
@@ -102,10 +106,16 @@ async function CreatePokemon(url){
             container.append(addPokemon)
     }
     addPokemon.addEventListener("click", (e)=>{
-            let workingOn = e.target.parentElement
-            team.push(workingOn.children[1])
-            teamMaker(workingOn.children[1])  
-            clear(e.target.parentElement)  
+        let workingOn = e.target.parentElement
+        sound = workingOn.children[0].getAttribute("sound")
+        const audio = new Audio(sound);
+        audio.volume = 0.06;
+        audio.play()
+        console.log("Image", workingOn.children[1])
+        team.push(workingOn.children[1])
+        teamMaker(workingOn.children[1])  
+        clear(e.target.parentElement)
+        
     })
 }
 
@@ -129,4 +139,8 @@ function teamMaker(pokemonToAdd) {
         counter += 1
         team = []
     }
+}
+//TODO: START WORKING ON IMPLEMENTING POKEMON WEAKNESSES CHART FOR TEAM
+function CalculateWeaknesses(){
+
 }

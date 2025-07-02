@@ -144,9 +144,26 @@ form {
     margin-top: 0px;
     border-style: double;
     border-color: black;
+    background-color: rgb(3, 121, 3);
+    
+}
+#AddButton:hover{
     background-color: lightgreen;
 }
 
 img {
     border-color: black;
+}
+img:hover{
+    transform: translateY(1px);
+}
+
+#pokemon > * {
+  font-family: 'Pixelon', sans-serif; 
+  text-shadow: 1px 1px 1px black,
+               1px 1px 1px black,
+               1px 1px 1px black,
+               1px 1px 1px black,
+               1px 1px 1px black;
+
 }
