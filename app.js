@@ -3,6 +3,9 @@ const clearButton = document.getElementById("clear")
 const shiny = document.getElementById("shinycheck")
 const body = document.querySelector("body")
 const imageContainer = document.getElementById("image-container")
+let typeColorsPromise = fetch('colors.json').then(res => res.json());
+
+
 
 let team = []
 let inputPokemon;
@@ -81,20 +84,36 @@ async function CreatePokemon(url){
     
     const img = document.createElement("img")
     const typingDiv = document.createElement("div")
-    typingDiv.setAttribute("id", "typings")
+    typingDiv.setAttribute("id", "pokemon")
     typingDiv.setAttribute("name", `${inputPokemon}`)
     const types = [...data.types]
     
     for (names of [...types]){
         type.push(names.type.name)
     }
-    
+    const colors = await typeColorsPromise
+    console.log(colors)
+    let count = 1
+    for (const typing of types) {
+        console.log(typing.type.name)
+        let typeTextDiv = document.createElement("div")
+        typeTextDiv.setAttribute("id",`type${count}`)
+        typeTextDiv.setAttribute("class", colors[typing.type.name] )
+        typeTextDiv.innerText = typing.type.name
+        count += 1
+        typingDiv.append(typeTextDiv)
+    }
+    console.log(typingDiv)
+    count = 0
     typesToShow = ([...type].join(" ")).toString()
-    //console.log(typesToShow)
+    // console.log(typesToShow)
+    // console.log(typeof(typesToShow))
     img.setAttribute("src", `${sprite}`)
     pokemonContainer.append(typingDiv)
+
     pokemonContainer.append(img)
-    typingDiv.append(typesToShow)
+
+    console.log(typingDiv)
     typing.push(typingDiv)
     imageContainer.append(pokemonContainer)
     pokemonContainers.push(pokemonContainer)

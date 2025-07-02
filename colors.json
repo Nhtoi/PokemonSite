@@ -1,0 +1,20 @@
+{
+  "normal": "beige",
+  "fire": "red",
+  "water": "blue",
+  "electric": "yellow",
+  "grass": "green",
+  "ice": "lightblue",
+  "fighting": "brown",
+  "poison": "purple",
+  "ground": "sandybrown",
+  "flying": "skyblue",
+  "psychic": "hotpink",
+  "bug": "olive",
+  "rock": "gray",
+  "ghost": "indigo",
+  "dragon": "darkblue",
+  "dark": "black",
+  "steel": "silver",
+  "fairy": "pink"
+}
