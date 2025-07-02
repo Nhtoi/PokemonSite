@@ -4,22 +4,17 @@ const shiny = document.getElementById("shinycheck")
 const body = document.querySelector("body")
 const imageContainer = document.getElementById("image-container")
 let typeColorsPromise = fetch('colors.json').then(res => res.json());
-
-
-
 let team = []
 let inputPokemon;
 let isShiny = false
 let pokemonContainers = []
-
 shiny.addEventListener("change", ()=>{
     if(shiny.checked){
         isShiny = true
-    } else{
+    }else { 
         isShiny = false
     }
 })
-
 function clear(target){
     if (target === undefined || target === null){
       let clearTarget = document.getElementById("image-container")
@@ -34,11 +29,9 @@ function clear(target){
       pokemonContainers.pop()
   }  
  }
-
 clearButton.addEventListener("click", ()=>{
     clear()
 })
-
 subButton.addEventListener("click", () =>{
     const input = document.getElementById("searchPokemon")
     inputPokemon = input.value
@@ -68,29 +61,20 @@ let typing = []
 //TODO: MAKE IT LOOK BETTER WHEN DISPLAYING TYPINGS
 async function CreatePokemon(url){
     const pokemonContainer = document.createElement("div")
-    pokemonContainer.setAttribute("id", "pokemonContainer")
-    
+    pokemonContainer.setAttribute("id", "pokemonContainer") 
     let sprite = ""
-    let type = []
-    let typesToShow = ""
     data = await getData(url)
     //console.log(data)
-    
     if (isShiny){
         sprite = data.sprites.front_shiny
     } else {
         sprite = data.sprites.front_default
     }
-    
     const img = document.createElement("img")
     const typingDiv = document.createElement("div")
     typingDiv.setAttribute("id", "pokemon")
     typingDiv.setAttribute("name", `${inputPokemon}`)
     const types = [...data.types]
-    
-    for (names of [...types]){
-        type.push(names.type.name)
-    }
     const colors = await typeColorsPromise
     console.log(colors)
     let count = 1
@@ -105,20 +89,11 @@ async function CreatePokemon(url){
     }
     console.log(typingDiv)
     count = 0
-    typesToShow = ([...type].join(" ")).toString()
-    // console.log(typesToShow)
-    // console.log(typeof(typesToShow))
     img.setAttribute("src", `${sprite}`)
     pokemonContainer.append(typingDiv)
-
     pokemonContainer.append(img)
-
-    console.log(typingDiv)
-    typing.push(typingDiv)
     imageContainer.append(pokemonContainer)
     pokemonContainers.push(pokemonContainer)
-    
-
     const addPokemon = document.createElement("button")
     addPokemon.setAttribute("id", "AddButton")
     addPokemon.setAttribute("class", "button")
@@ -127,36 +102,21 @@ async function CreatePokemon(url){
             container.append(addPokemon)
     }
     addPokemon.addEventListener("click", (e)=>{
-            
             let workingOn = e.target.parentElement
             team.push(workingOn.children[1])
-            teamMaker(workingOn.children[1])
-            //console.log("LOOK HERE ", workingOn.children[1]) 
-            //console.log(team.length)    
+            teamMaker(workingOn.children[1])  
             clear(e.target.parentElement)  
     })
 }
 
-
-//console.log("Pokemon To Add",team)
 let counter = 0;
 const teamContainer = document.getElementById("team-container")
 const completedTeam = document.getElementById("completed-team")
-
-//TODO: PRETTY UP THE DISPLAY FOR THE TEAMS
-//TODO: ADD A WAY TO REMOVE THE POKEMON
 function teamMaker(pokemonToAdd) {
-    //console.log("Inside the function", team)
     const image = pokemonToAdd.getAttribute("src")
     const teamDiv = document.createElement("img")
-    
-    //team.push(pokemonToAdd)
-    //console.log(team.length)
-    
     teamDiv.setAttribute("src",`${image}`)
-    //console.log(teamDiv)
     teamContainer.append(teamDiv)
-
     if (team.length === 6){
         let finishedTeam = document.createElement("div")
         finishedTeam.setAttribute("id", `team-number${counter}`)
@@ -164,12 +124,9 @@ function teamMaker(pokemonToAdd) {
         addAll.forEach(child => {
             finishedTeam.append(child)
         })
-        // teamContainer.replaceChildren("")
         console.log(finishedTeam)
-        completedTeam.append(finishedTeam)
-        
+        completedTeam.append(finishedTeam)    
         counter += 1
-        // finishedTeam.remove()
         team = []
     }
 }
