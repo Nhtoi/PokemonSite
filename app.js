@@ -1,11 +1,20 @@
+//!BIG TODO: REFRACTOR TO USE OBJECTS INSTEAD OF PASSING PROPERTIES BY HTML VALUES
+
+import {PopulateArray} from '/DamageRelations.js'
+
 const subButton = document.getElementById("subButton")
 const clearButton = document.getElementById("clear")
 const shiny = document.getElementById("shinycheck")
 const body = document.querySelector("body")
 const imageContainer = document.getElementById("image-container")
+let typesSet = new Set()
 
 let typeColorsPromise = fetch('colors.json').then(res => res.json());
-let team = []
+//team, team.pokemon, team.pokemon.types team.pokemon.name so team is an object that has pokemon as an object
+let team = {
+    "team": [],
+    "allTypes": new Set()
+}
 let inputPokemon;
 let isShiny = false
 let pokemonContainers = []
@@ -65,8 +74,7 @@ async function CreatePokemon(url){
     const pokemonContainer = document.createElement("div")
     pokemonContainer.setAttribute("id", "pokemonContainer") 
     let sprite = ""
-    data = await getData(url)
-    
+    const data = await getData(url)
     // console.log(sound)
     if (isShiny){
         sprite = data.sprites.front_shiny
@@ -79,19 +87,20 @@ async function CreatePokemon(url){
     typingDiv.setAttribute("name", `${inputPokemon}`)
     typingDiv.setAttribute("sound", `${data.cries.latest}`)
     const types = [...data.types]
+    //TypesInfo(data.types)
     const colors = await typeColorsPromise
-    console.log(colors)
+    //console.log(colors)
     let count = 1
     for (const typing of types) {
-        console.log(typing.type.name)
+        //console.log(typing.type.name)
         let typeTextDiv = document.createElement("div")
         typeTextDiv.setAttribute("id",`type${count}`)
-    typeTextDiv.setAttribute("class", colors[typing.type.name] )
+        typeTextDiv.setAttribute("class", colors[typing.type.name] )
         typeTextDiv.innerText = typing.type.name
         count += 1
         typingDiv.append(typeTextDiv)
     }
-    console.log(typingDiv)
+    //console.log(typingDiv)
     count = 0
     img.setAttribute("src", `${sprite}`)
     pokemonContainer.append(typingDiv)
@@ -106,13 +115,17 @@ async function CreatePokemon(url){
             container.append(addPokemon)
     }
     addPokemon.addEventListener("click", (e)=>{
+        TypesInfo(data.types)
         let workingOn = e.target.parentElement
         sound = workingOn.children[0].getAttribute("sound")
         const audio = new Audio(sound);
         audio.volume = 0.06;
         audio.play()
         console.log("Image", workingOn.children[1])
-        team.push(workingOn.children[1])
+        team.team.push(workingOn.children[1])
+        console.log(team.team)
+        //team.allTypes.add(TypesInfo(data.types))
+        // console.log(team.allTypes)
         teamMaker(workingOn.children[1])  
         clear(e.target.parentElement)
         
@@ -122,25 +135,35 @@ async function CreatePokemon(url){
 let counter = 0;
 const teamContainer = document.getElementById("team-container")
 const completedTeam = document.getElementById("completed-team")
-function teamMaker(pokemonToAdd) {
+async function teamMaker(pokemonToAdd) {
     const image = pokemonToAdd.getAttribute("src")
     const teamDiv = document.createElement("img")
     teamDiv.setAttribute("src",`${image}`)
     teamContainer.append(teamDiv)
-    if (team.length === 6){
+    if (team.team.length === 3){
         let finishedTeam = document.createElement("div")
         finishedTeam.setAttribute("id", `team-number${counter}`)
-        addAll = Array.from(teamContainer.children)
+        let addAll = Array.from(teamContainer.children)
         addAll.forEach(child => {
-            finishedTeam.append(child)
+        finishedTeam.append(child)
+        //console.log(team.team)
         })
-        console.log(finishedTeam)
+        //!CALL TO GET DAMAGE RELATIONS        
+        const teamDamageRelations = await PopulateArray(Array.from(typesSet)) 
+        console.log("Readin from here", teamDamageRelations)
         completedTeam.append(finishedTeam)    
         counter += 1
-        team = []
+        team.team = []
+        typesSet = new Set()
     }
 }
-//TODO: START WORKING ON IMPLEMENTING POKEMON WEAKNESSES CHART FOR TEAM
-function CalculateWeaknesses(){
 
+function TypesInfo(data){
+    for (const type of data) {
+        typesSet.add(type.type.url)
+    }
+    console.log("HERE",typesSet)
 }
+
+//TODO: DISPLAY TEAM DAMAGE RELATIONS
+
