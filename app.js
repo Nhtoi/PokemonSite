@@ -140,6 +140,7 @@ async function teamMaker(pokemonToAdd) {
     const teamDiv = document.createElement("img")
     teamDiv.setAttribute("src",`${image}`)
     teamContainer.append(teamDiv)
+    //! IMPORTANT HAVE THIS SET TO 3 INSTEAD OF 6 FOR TESTING
     if (team.team.length === 3){
         let finishedTeam = document.createElement("div")
         finishedTeam.setAttribute("id", `team-number${counter}`)
@@ -147,8 +148,7 @@ async function teamMaker(pokemonToAdd) {
         addAll.forEach(child => {
         finishedTeam.append(child)
         //console.log(team.team)
-        })
-        //!CALL TO GET DAMAGE RELATIONS        
+        })       
         const teamDamageRelations = await PopulateArray(Array.from(typesSet)) 
         console.log("Readin from here", teamDamageRelations)
         completedTeam.append(finishedTeam)    
