@@ -158,6 +158,26 @@ img:hover{
     transform: translateY(1px);
 }
 
+#completed-team {
+    margin-top: 150px;
+    margin-left: 20px;
+    display: flex;
+    flex-wrap: wrap; /* 👈 Allows wrapping to new rows */
+    width: fit-content;
+    gap: 20px;
+    align-self: center;
+    border: 1px solid black;
+}
+
+#completed-team > div {
+    border: 1px solid black;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns */
+    grid-template-rows: repeat(3, auto);   /* 3 rows */
+    gap: 10px;
+    width: fit-content;
+}
+
 #pokemon > * {
   font-family: 'Pixelon', sans-serif; 
   text-shadow: 1px 1px 1px black,
